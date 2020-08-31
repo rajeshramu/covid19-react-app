@@ -1,33 +1,55 @@
-import * as React from "react";
-import { View, Text } from "react-native";
+import React , {Component} from 'react';
+import {View , Dimensions , StyleSheet , Text} from 'react-native';
 
-const weatherGridRow = {
-  flexDirection: "row",
-  paddingTop: 15,
-  paddingLeft: 10,
-};
-const weatherGridCell = { flex: 1 };
-export default class Table extends React.Component {
+const {height , width} = Dimensions.get('window');
+const styles = StyleSheet.create({
+  cellContainer: 
+  {
+    flex: 1 , alignSelf: 'stretch' , flexDirection: 'row', width: width
+  } , 
+  cell: 
+  {
+    flex: 1 , alignSelf: 'stretch' , width: width 
+  } , 
+  tableHeader: 
+  {
+      flexDirection: 'row', width: width , height: height/10 , backgroundColor: '#4a5564'
+  } , 
+  tableHeaderCell: 
+  {
+    width: width /3 , height: height/10
+  }
+
+})
+export default class EmployeeTable extends Component {
+  renderRow() {
+      return (
+          <View style={{ flex: 1, alignSelf: 'stretch', flexDirection: 'row' }}>
+              <View style={{ flex: 1, alignSelf: 'stretch' }} /> 
+              <View style={{ flex: 1, alignSelf: 'stretch' }} />
+              <View style={{ flex: 1, alignSelf: 'stretch' }} />
+              <View style={{ flex: 1, alignSelf: 'stretch' }} />
+              <View style={{ flex: 1, alignSelf: 'stretch' }} />
+          </View>
+      );
+  }
+
   render() {
-    const data = [1, 2, 3, 4, 5];
-    return (
-      <View style={{ flex: 1 }}>
-        <View style={weatherGridRow}>
-                                      
-          <View style={weatherGridCell}>
-                                            
-            <Text style={{ justifyContent: "flex-start" }}>Strikes</Text>
-                                        
+      return (
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            {/* This is Table Header */}
+            <View style = {styles.tableHeader}>
+              <View style = {styles.tableHeaderCell}><Text>Rajini</Text></View>
+              <View style = {styles.tableHeaderCell}><Text>Kamal</Text></View>
+              <View style = {styles.tableHeaderCell}><Text>Vikram</Text></View>
+            </View>
+            {/* This is table cell */}
+            <View style = {styles.cellContainer}>
+              <View style = {styles.cell}/>
+              <View style = {styles.cell}/>
+              <View style = {styles.cell}/>
+            </View>
           </View>
-                                      
-          <View style={weatherGridCell}>
-                                            
-            <Text style={{ justifyContent: "flex-end" }}>Rajinikanth</Text>
-                                        
-          </View>
-                                  
-        </View>
-      </View>
-    );
+      );
   }
 }
