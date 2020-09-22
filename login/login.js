@@ -11,33 +11,25 @@ import {
   ActivityIndicator,
 } from "react-native";
 import styles from "../assets/styles";
-
+import Colors from "../assets/colors"; 
 import { Ionicons } from "@expo/vector-icons";
 import {
-  userLoginRequest,
+  loginRequest,
   setAuthToken,
-  getSiteID,
-} from "../../actions/rest-module";
-import { AuthContext } from "../../contexts/AuthContext";
+} from "../service/restmodule";
+import { AuthContext } from "../context/AuthContext";
+import titles from "../assets/titles";
 
-export default function Login(props) {
+export default function login(props) {
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
   const [errorMessage, seterrorMessage] = useState("");
   const [isLoading, setisLoading] = useState(false);
   const { signIn } = React.useContext(AuthContext);
-  const isMountedRef = useRef();
 
-  useEffect(() => {
-    isMountedRef.current = true;
-    return () => {
-      isMountedRef.current = false;
-    };
-  });
   function signInAsync() {
-    if (isMountedRef.current) {
       setisLoading(true);
-      userLoginRequest({ username, password })
+      loginRequest({ username, password })
         .then(function (response) {
           var description = response.data["description"];
           if (description === "Successful") {
@@ -50,21 +42,7 @@ export default function Login(props) {
             AsyncStorage.setItem("username", username);
             AsyncStorage.setItem("roles", roles.toString());
             setAuthToken(usrtoken);
-            getSiteID()
-              .then(function (response) {
-                const sites = [];
-                response.data.sites.forEach((element) => {
-                  sites.push({
-                    label: element.sitename,
-                    value: element.siteid,
-                  });
-                });
-                AsyncStorage.setItem("Sites", JSON.stringify(sites));
-                signIn();
-              })
-              .catch(function (error) {
-                console.log(error);
-              });
+            signIn();
             setisLoading(false);
           } else {
             seterrorMessage(response.data["description"]);
@@ -77,14 +55,12 @@ export default function Login(props) {
           console.log(error);
           setisLoading(false);
         });
-    }
-    isMountedRef.current = false;
   }
   return (
     <KeyboardAvoidingView style={styles.containerSignIn} behavior="padding">
       <Image
         style={styles.logo}
-        source={require("../../assets/images/LCRA.png")}
+        source={require("../assets/images/logo.jpg")}
       ></Image>
       <View style={styles.form}>
         {errorMessage !== "" && (
@@ -102,7 +78,7 @@ export default function Login(props) {
             name={"firstTextInput"}
             value={username}
             onChangeText={(username) => setusername(username)}
-            placeholder={Strings.username}
+            placeholder={titles.username}
             //placeholderTextColor = {Colors.noticeText}
             autoCorrect={false}
             returnKeyType="next"
@@ -126,7 +102,7 @@ export default function Login(props) {
             value={password}
             onChangeText={(password) => setpassword(password)}
             style={styles.textInput}
-            placeholder={Strings.password}
+            placeholder={titles.password}
             //placeholderTextColor = {Colors.noticeText}
             secureTextEntry
             label="Password"
@@ -152,6 +128,6 @@ export default function Login(props) {
   );
 }
 
-Login.navigationOptions = {
+login.navigationOptions = {
   header: null,
 };

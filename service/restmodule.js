@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const instance = axios.create({ baseURL: apiURL });
+const instance = axios.create({ baseURL: window.apiURL });
 
 export function setAuthToken(token) {
   if (token) {
