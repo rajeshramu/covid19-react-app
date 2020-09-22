@@ -11,5 +11,5 @@ export function setAuthToken(token) {
 }
 
 export function loginRequest(data) {
-  return instance.post("/ofserver/oflogin", data);
+  return instance.post("/acserver/login", data);
 }
